@@ -17,3 +17,7 @@ node_modules
 # Windows Zone.Identifier metadata
 *:Zone.Identifier
 *Zone.Identifier
+
+# Windows Zone.Identifier metadata
+*:Zone.Identifier
+*Zone.Identifier
