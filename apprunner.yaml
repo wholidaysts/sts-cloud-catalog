@@ -1,0 +1,18 @@
+version: 1.0
+runtime: nodejs18
+build:
+  commands:
+    build:
+      - corepack enable
+      - corepack prepare pnpm@latest --activate
+      - pnpm install --frozen-lockfile=false
+      - pnpm build
+run:
+  runtime-version: 18
+  command: pnpm start
+  network:
+    port: 3000
+    env: PORT
+  env:
+    - name: NODE_ENV
+      value: production
