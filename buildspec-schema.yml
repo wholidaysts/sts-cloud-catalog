@@ -1,0 +1,16 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - dnf install -y postgresql15
+  build:
+    commands:
+      - echo "Running 001-create-tables.sql"
+      - psql -f scripts/001-create-tables.sql
+      - echo "Running 002-seed-data.sql"
+      - psql -f scripts/002-seed-data.sql
+      - echo "Running 003-rename-partially-to-vendor.sql"
+      - psql -f scripts/003-rename-partially-to-vendor.sql || echo "Skip if already renamed"
+      - echo "Verifying"
+      - psql -c "SELECT status, COUNT(*) FROM services GROUP BY status ORDER BY status;"
