@@ -1,3 +1,5 @@
+import { auth } from "@/lib/auth"
+import { redirect } from "next/navigation"
 import Image from "next/image"
 import { signIn } from "@/lib/auth"
 import { Button } from "@/components/ui/button"
@@ -9,7 +11,15 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
-export default function LoginPage() {
+export default async function HomePage() {
+  const session = await auth()
+
+  // If authenticated, redirect to admin/catalog
+  if (session) {
+    redirect("/admin")
+  }
+
+  // Show login page
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted px-4">
       <Card className="w-full max-w-md">
@@ -34,7 +44,7 @@ export default function LoginPage() {
           <form
             action={async () => {
               "use server"
-              await signIn("microsoft-entra-id", { redirectTo: "/" })
+              await signIn("microsoft-entra-id", { redirectTo: "/admin" })
             }}
           >
             <Button type="submit" className="w-full" size="lg">
