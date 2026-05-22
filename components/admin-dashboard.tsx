@@ -220,8 +220,8 @@ export function AdminDashboard() {
                           <Image
                             src={service.provider === "AWS" ? "/logos/aws-logo.png" : "/logos/azure-logo.png"}
                             alt={service.provider}
-                            width={20}
-                            height={20}
+                            width={24}
+                            height={24}
                             className="object-contain"
                           />
                           <span>{providerShortLabels[service.provider]}</span>
