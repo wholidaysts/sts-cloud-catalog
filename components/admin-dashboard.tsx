@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from "react"
 import useSWR, { mutate } from "swr"
-import Image from "next/image"
 import { CloudService, statusLabels, providerShortLabels } from "@/lib/types"
 import { ServiceForm } from "@/components/service-form"
 import { StatusBadge } from "@/components/status-badge"
@@ -32,6 +31,10 @@ const fetcher = async (url: string) => {
   if (!res.ok) throw new Error("Request failed")
   return res.json()
 }
+
+// Base64 encoded logos - no S3 needed!
+const AWS_LOGO = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAABkCAMAAAD87/wBAAAA21BMVEX/////mQAzMzMvLy8sLCwpKSkiIiIlJSUnJycfHx////35+fn8/Pz09PTm5ubr6+vY2Njv7+/c3Nzh4eHIyMjMzMzR0dGjo6Ourq68vLy1tbWnp6eKiopDQ0N7e3tycnJpaWlgYGBYWFhNTU09PT2ampp/f39VVVWQkJD/nwD/oQD/pQD/qwD/rgD/sQD/tAD/twD/ugD/vQD/wAD/wgD/xQD/yAD/ywD/zgD/0QD/1AD/1gD/2gD/3QD/4AD/4gD/5QD/6AD/6gD/7QD/8AD/8gD/9QD/+AD/+gD/+wAAAP/i8XOAAAAH0klEQVR4nO2daXu6OBSGgxpBQRRRQFRqba1au3RxX6Yz0///n+YkrGK1tXNnvs7ce77YBYXkzeE4CSEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMBfgS9vJ+XL/8/p/+8Cfx3+n077f"
+const AZURE_LOGO = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAABkCAMAAAD87/wBAAAAeFBMVEUAAAD///8AiOYAie0AhugAhOgAi+oAiOgAgOUAhucAgOoAh+cAhegAfuMAhuYAf+UAhOgAhecAguYAh+gAhOcAhucAhOgAgecAhegAh+cAhOgAhugAg+YAhugAhugAgucAhugAhOcAhugAhOgAhOgAhugAhugAhOgAhegAEwEhAAAAJnRSTlMAESJEZnd5fYGGjJKXnKOprru9wsjMz9LX3+Hm6Ovt8PP2+Pn8/sxRzisAAAJ0SURBVHja7d3pbuJAEIXh"
 
 export function AdminDashboard() {
   const { data: services, isLoading } = useSWR<CloudService[]>(
@@ -217,8 +220,8 @@ export function AdminDashboard() {
                       </td>
                       <td className="hidden px-4 py-3 text-sm text-muted-foreground sm:table-cell">
                         <div className="flex items-center gap-2">
-                          <Image
-                            src={service.provider === "AWS" ? "/logos/aws-logo.png" : "/logos/azure-logo.png"}
+                          <img
+                            src={service.provider === "AWS" ? AWS_LOGO : AZURE_LOGO}
                             alt={service.provider}
                             width={24}
                             height={24}
