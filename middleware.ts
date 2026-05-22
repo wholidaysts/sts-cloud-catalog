@@ -4,7 +4,7 @@ import { NextResponse } from "next/server"
 export default auth((req) => {
   const isLoggedIn = !!req.auth
   const isAdminRoute = req.nextUrl.pathname.startsWith("/admin")
-  const isLoginPage = req.nextUrl.pathname === "/login"
+  const isRootPage = req.nextUrl.pathname === "/"
   const isApiRoute = req.nextUrl.pathname.startsWith("/api")
   const isAuthRoute = req.nextUrl.pathname.startsWith("/api/auth")
 
@@ -13,14 +13,9 @@ export default auth((req) => {
     return NextResponse.next()
   }
 
-  // Redirect logged-in users away from login page
-  if (isLoginPage && isLoggedIn) {
-    return NextResponse.redirect(new URL("/", req.url))
-  }
-
-  // Protect admin routes
+  // Protect admin routes - redirect to root (login)
   if (isAdminRoute && !isLoggedIn) {
-    return NextResponse.redirect(new URL("/login", req.url))
+    return NextResponse.redirect(new URL("/", req.url))
   }
 
   // Protect API routes (except public GET for services list)
@@ -35,5 +30,5 @@ export default auth((req) => {
 })
 
 export const config = {
-  matcher: ["/admin/:path*", "/login", "/api/:path*"],
+  matcher: ["/admin/:path*", "/api/:path*"],
 }
